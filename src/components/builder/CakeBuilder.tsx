@@ -181,7 +181,10 @@ export function CakeBuilder({ initialConfig }: { initialConfig: CakeConfig }) {
           ))}
         </OptionGroup>
 
-        <OptionGroup label="Occasion" className="grid grid-cols-4 gap-2">
+        {/* Two across rather than four — at column width, four tiles are too
+            narrow for "Baby Shower" to fit on one line, which left the row
+            ragged. */}
+        <OptionGroup label="Occasion" className="grid grid-cols-2 gap-2">
           {OCCASIONS.map((occasion) => {
             const Icon = OCCASION_ICONS[occasion.id];
             return (

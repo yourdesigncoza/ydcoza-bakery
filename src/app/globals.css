@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/**
+ * Design tokens sampled from the Build Your Cake mockup: a warm ivory page,
+ * white cards separated by hairline rules, cocoa-brown type and a rust accent
+ * that marks every selected option.
+ */
+@theme {
+  --color-page: #fbf6f2;
+  --color-card: #ffffff;
+  --color-rule: #f0e7e0;
+  --color-rule-strong: #e3d5c9;
+  --color-ink: #4a2e20;
+  --color-body: #6b5546;
+  --color-muted: #9c8878;
+  --color-accent: #ad7453;
+  --color-accent-soft: #fdf3ec;
+  --color-cocoa: #674936;
+  --color-note: #fcf4ed;
+
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+html {
+  background: var(--color-page);
+  color-scheme: light;
+}
+
+/* Cormorant defaults to old-style figures, which read as lowercase in prices. */
+.font-display {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+}
+
+/* Selected option tiles share one treatment across all five columns. */
+@utility tile-base {
+  @apply relative w-full rounded-xl border text-left transition;
+  @apply border-rule bg-card hover:border-rule-strong;
+}
+
+@utility tile-selected {
+  @apply border-accent bg-accent-soft;
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+@utility column-card {
+  @apply flex flex-col rounded-2xl border border-rule bg-card;
+}
+
+@utility section-label {
+  @apply text-[11px] font-semibold uppercase tracking-[0.13em] text-muted;
+}
+
+/* The builder columns scroll independently on desktop. */
+@utility column-scroll {
+  @apply overflow-y-auto overscroll-contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rule-strong) transparent;
+}

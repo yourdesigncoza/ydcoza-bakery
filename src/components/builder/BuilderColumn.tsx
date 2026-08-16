@@ -8,13 +8,15 @@ interface BuilderColumnProps {
 /**
  * One of the builder's five numbered steps.
  *
- * The header stays put while the options scroll beneath it, which keeps the
- * customer's place visible on a long column like Cake Type.
+ * The page itself scrolls — the columns are not their own scroll containers.
+ * Nesting scrollers here traps the wheel and the finger over whichever column
+ * is under the cursor, which is worse than a long page. On desktop the numbered
+ * heading sticks to the top instead, so the customer keeps their place.
  */
 export function BuilderColumn({ step, title, icon, children }: BuilderColumnProps) {
   return (
-    <section className="column-card min-h-0" aria-label={`Step ${step}: ${title}`}>
-      <header className="flex items-center gap-2.5 border-b border-rule px-4 py-3.5">
+    <section className="column-card" aria-label={`Step ${step}: ${title}`}>
+      <header className="column-heading flex items-center gap-2.5 border-b border-rule px-4 py-3.5">
         <span className="text-accent" aria-hidden>
           {icon}
         </span>
@@ -22,7 +24,7 @@ export function BuilderColumn({ step, title, icon, children }: BuilderColumnProp
           <span className="tabular-nums">{step}.</span> {title}
         </h2>
       </header>
-      <div className="column-scroll flex-1 space-y-5 px-3.5 py-4">{children}</div>
+      <div className="flex-1 space-y-5 px-3.5 py-4">{children}</div>
     </section>
   );
 }

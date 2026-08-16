@@ -13,8 +13,7 @@ export default async function BuilderPage({
   return (
     <>
       <SiteHeader />
-      {/* On desktop the five columns fill the viewport and scroll internally. */}
-      <main className="mx-auto flex w-full max-w-[1560px] flex-1 flex-col px-4 pb-6 lg:h-[calc(100dvh-3.5rem)] lg:min-h-0 lg:overflow-hidden">
+      <main className="mx-auto flex w-full max-w-[1560px] flex-1 flex-col px-4 pb-10">
         <div className="py-6 text-center">
           <h1 className="font-display text-[40px] font-semibold leading-none text-ink sm:text-[46px]">
             Build Your Cake

@@ -57,9 +57,7 @@ body {
   @apply text-[11px] font-semibold uppercase tracking-[0.13em] text-muted;
 }
 
-/* The builder columns scroll independently on desktop. */
-@utility column-scroll {
-  @apply overflow-y-auto overscroll-contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-rule-strong) transparent;
+/* The column header stays put while its options scroll past on desktop. */
+@utility column-heading {
+  @apply lg:sticky lg:top-14 lg:z-10 lg:rounded-t-2xl lg:bg-card;
 }

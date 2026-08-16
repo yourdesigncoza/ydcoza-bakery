@@ -67,7 +67,7 @@ export function CakeBuilder({ initialConfig }: { initialConfig: CakeConfig }) {
   const needsInscription = config.addOnIds.some((id) => wordingCarriers.includes(id));
 
   return (
-    <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.05fr_0.95fr_1.15fr_0.95fr_1.15fr]">
+    <div className="grid flex-1 items-start gap-4 lg:grid-cols-[1.05fr_0.95fr_1.15fr_0.95fr_1.15fr]">
       <BuilderColumn step={1} title="Select Cake Type" icon={<CakeIcon className="h-5 w-5" />}>
         <OptionGroup>
           {CAKE_TYPES.map((type) => (

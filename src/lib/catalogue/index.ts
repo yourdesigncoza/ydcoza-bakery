@@ -380,17 +380,25 @@ export const QUOTE_THRESHOLD = 3500;
 /** The bakery cannot take an order for collection sooner than this. */
 export const MIN_LEAD_DAYS = 2;
 
+/**
+ * The cake a visitor starts with.
+ *
+ * The required choices default to the plainest option in each list, so the
+ * price on screen is a real starting price rather than a blank. Add-ons are
+ * deliberately empty: they are optional extras that cost money, and pre-ticking
+ * them bills the customer for things they never chose.
+ */
 export const DEFAULT_CONFIG: CakeConfig = {
   typeId: "single-barrel",
   flavourId: "vanilla",
   fillingId: "buttercream",
-  paletteId: "blush",
+  paletteId: "ivory",
   sizeId: "standard",
   finishId: "smooth-buttercream",
   occasionId: "birthday",
   presentationId: "cake-board",
-  addOnIds: ["acrylic-topper", "macarons", "name-plaque", "custom-message"],
-  inscription: "Happy Birthday",
+  addOnIds: [],
+  inscription: "",
   specialInstructions: "",
 };
 

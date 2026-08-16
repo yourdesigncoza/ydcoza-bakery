@@ -46,3 +46,4 @@ next-env.d.ts
 # Reference material: third-party bakery photos and a copyrighted paper.
 # Kept local rather than redistributed through a public repo.
 /idea/
+.env*.local

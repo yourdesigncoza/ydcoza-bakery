@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bloom & Batter — Build Your Cake
 
-## Getting Started
+A custom cake ordering system for a small bakery. Customers design a cake from
+pre-approved options, see an AI-rendered impression of it, pay online, and track
+the order through to collection. The bakery gets a complete production brief
+instead of a WhatsApp thread.
 
-First, run the development server:
+Built as a demonstration piece. Bloom & Batter is a fictional studio.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## How it fits together
+
+```
+src/lib/catalogue/     the menu — every option, price, lead time and render prompt
+  index.ts             the catalogue itself; the single source of truth
+  pricing.ts           derives line items, totals, quote routing and lead times
+  prompt.ts            builds the image prompt and the preview cache key
+src/lib/orders/        order shapes and the storage interface
+src/lib/payfast.ts     payment initiation and notification verification
+src/lib/openrouter.ts  image rendering
+src/app/               builder, checkout, payment handover, tracking, order board
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Adding an option to the menu is a single edit to `src/lib/catalogue/index.ts`.
+The builder tile, the price, the order brief, the admin board and the wording
+sent to the image model all follow from it.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Running it
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Then open http://localhost:3000.
 
-To learn more about Next.js, take a look at the following resources:
+### Environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Needed for | Notes |
+| --- | --- | --- |
+| `OPENROUTER_API_KEY` | Cake previews | Required for the preview button and the tile generator |
+| `BLOB_READ_WRITE_TOKEN` | Preview cache, photo uploads | Set automatically by `vercel env pull` |
+| `ADMIN_PASSWORD` | The order board | Without it `/admin` stays closed |
+| `ADMIN_SESSION_SECRET` | The order board | Defaults to `ADMIN_PASSWORD` if unset |
+| `DATABASE_URL` | Order persistence | Without it orders are held in memory and lost on restart |
+| `PAYFAST_LIVE` | Real payments | Defaults to PayFast's sandbox |
+| `PAYFAST_MERCHANT_ID` / `_KEY` / `_PASSPHRASE` | Real payments | Only needed when `PAYFAST_LIVE=true` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Pull the cloud values into `.env.local` with `vercel env pull`.
 
-## Deploy on Vercel
+### Payments
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The demo runs against the PayFast sandbox using PayFast's published test
+merchant, so no real money moves. Note that the sandbox merchant has a
+passphrase set — signing without it is rejected as a signature mismatch, which
+is a confusing way to discover a missing credential.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+PayFast cannot reach a development machine, so no `notify_url` is sent when
+running on localhost. Payments therefore stay at *Awaiting payment* locally and
+are confirmed by hand from the order board; on a deployed URL the notification
+confirms them automatically.
+
+## Option photography
+
+The 34 option tiles are generated once and committed:
+
+```bash
+npx tsx scripts/generate-catalogue-images.ts           # fill in anything missing
+npx tsx scripts/generate-catalogue-images.ts --force types   # redraw one section
+```
+
+Each tile costs roughly R1.30 to draw. Live previews are cached in Blob under a
+hash of the design, so building the same cake twice costs nothing.

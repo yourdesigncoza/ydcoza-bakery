@@ -55,6 +55,21 @@ export function config() {
 }
 
 /**
+ * Names of the environment variables carrying real PayFast credentials.
+ *
+ * Everything `config()` falls back to is PayFast's published sandbox, which
+ * moves no money; anything set here is the deployment's own. Used to keep the
+ * simulated checkout off a storefront that could charge a customer.
+ */
+export function liveCredentials(): string[] {
+  const names = ["PAYFAST_MERCHANT_ID", "PAYFAST_MERCHANT_KEY", "PAYFAST_PASSPHRASE"];
+  return [
+    ...(isLive() ? ["PAYFAST_LIVE"] : []),
+    ...names.filter((name) => (process.env[name] ?? "").trim() !== ""),
+  ];
+}
+
+/**
  * Encode exactly as PHP's `urlencode` does.
  *
  * PayFast builds its signature server-side in PHP, so anything encoded even

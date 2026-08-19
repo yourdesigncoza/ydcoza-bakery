@@ -78,7 +78,7 @@ export interface Order {
   previewUrl: string | null;
   /** Blob URL of a reference photo the customer attached. */
   inspirationUrl: string | null;
-  /** PayFast's payment id, once a payment has been confirmed. */
+  /** The gateway's payment id, once a payment has been confirmed. */
   paymentId: string | null;
   /** Free-text notes the bakery adds while working the order. */
   bakeryNotes: string;

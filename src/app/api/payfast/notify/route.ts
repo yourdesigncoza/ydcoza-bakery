@@ -1,5 +1,6 @@
 import { getOrderStore } from "@/lib/orders/store";
 import { verifyNotification } from "@/lib/payfast";
+import { confirmPayment } from "@/lib/payments";
 
 /**
  * PayFast Instant Transaction Notification endpoint.
@@ -39,14 +40,7 @@ export async function POST(request: Request) {
     return new Response("OK", { status: 200 });
   }
 
-  // Notifications can arrive more than once; confirming twice is harmless but
-  // must not drag an order that has moved on back to "confirmed".
-  if (order.status === "awaiting_payment") {
-    await store.update(reference, {
-      status: "confirmed",
-      paymentId: params.get("pf_payment_id"),
-    });
-  }
+  await confirmPayment(order, params.get("pf_payment_id"));
 
   return new Response("OK", { status: 200 });
 }

@@ -10,7 +10,9 @@
  *
  * Note that payment handover is PayFast, which is South African and settles in
  * rand only. A deployment outside South Africa needs its own gateway before it
- * can take money, whatever this file says.
+ * can take money, whatever this file says. `PAYMENT_PROVIDER=demo` stands in
+ * for one while a storefront is only being shown (`lib/payments.ts`); it takes
+ * nothing and confirms orders on a button press.
  */
 
 /**

@@ -17,6 +17,7 @@ src/lib/catalogue/     the menu — every option, price, lead time and render pr
   prompt.ts            builds the image prompt and the preview cache key
 src/lib/market.ts      currency, locale and tax for the market being sold into
 src/lib/orders/        order shapes and the storage interface
+src/lib/payments.ts    which payment step runs, and the transition a payment causes
 src/lib/payfast.ts     payment initiation and notification verification
 src/lib/openrouter.ts  image rendering
 src/app/               builder, checkout, payment handover, tracking, order board
@@ -36,7 +37,9 @@ leaves out keeps the rand figure.
 
 Payments are the exception. PayFast is South African and settles in rand only,
 so a deployment outside South Africa needs its own gateway before it can take
-money.
+money. Until one is wired up, `PAYMENT_PROVIDER=demo` puts a simulated checkout
+in its place so the flow can still be shown end to end in the market's own
+currency.
 
 ## Running it
 
@@ -57,6 +60,7 @@ Then open http://localhost:3000.
 | `ADMIN_PASSWORD` | The order board | Without it `/admin` stays closed |
 | `ADMIN_SESSION_SECRET` | The order board | Defaults to `ADMIN_PASSWORD` if unset |
 | `DATABASE_URL` | Order persistence | Without it orders are held in memory and lost on restart |
+| `PAYMENT_PROVIDER` | Which payment step runs | `payfast` (default) or `demo` |
 | `PAYFAST_LIVE` | Real payments | Defaults to PayFast's sandbox |
 | `PAYFAST_MERCHANT_ID` / `_KEY` / `_PASSPHRASE` | Real payments | Only needed when `PAYFAST_LIVE=true` |
 
@@ -73,6 +77,33 @@ PayFast cannot reach a development machine, so no `notify_url` is sent when
 running on localhost. Payments therefore stay at *Awaiting payment* locally and
 are confirmed by hand from the order board; on a deployed URL the notification
 confirms them automatically.
+
+#### The demonstration provider
+
+`PAYMENT_PROVIDER=demo` replaces the PayFast handover with a simulated checkout
+of our own. It exists because PayFast serves South Africa only: a prospect in
+Cork or Brisbane clicking *pay* would land on a South African gateway quoting
+rands, which is not a demonstration of anything. The demo page prices the order
+with `formatMoney`, so it reads in the market's currency, and its button walks
+the order into *Confirmed* through the same transition PayFast's notification
+uses — the rest of the flow, tracking page and order board included, is real.
+
+What it deliberately is not:
+
+- **Not a payment page.** No money moves and no gateway is contacted. A
+  deployment that sells needs a real integration; this is a placeholder for the
+  demonstration period, not a substitute for building one.
+- **Not dressed as a processor.** It carries no third-party name, logo or
+  styling. It is the bakery's own page, so a screenshot of it cannot imply an
+  integration that does not exist.
+- **Not a card form.** The card fields are fixed at the published test number,
+  disabled, and submitted nowhere. A typeable card form on a public demo URL is
+  phishing-shaped whatever it was meant for.
+
+It refuses to run where real money could move: setting `PAYMENT_PROVIDER=demo`
+alongside `PAYFAST_LIVE=true`, any `PAYFAST_MERCHANT_*`/`PAYFAST_PASSPHRASE`
+value, or any Stripe secret key raises an error naming the variable instead of
+rendering the page.
 
 ## Option photography
 

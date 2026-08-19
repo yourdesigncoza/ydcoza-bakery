@@ -80,6 +80,35 @@ There is no localStorage, cookie or session for the design. `config-codec.ts` en
 
 Customer PII (name, email, phone, delivery address) must not go in the Blob store — it is public. Blob holds only rendered previews and inspiration photos.
 
+### One payment step at a time
+
+`src/lib/payments.ts` picks the payment step from `PAYMENT_PROVIDER`: PayFast
+(the default) or `demo`. Both finish in `confirmPayment()`, which holds the one
+rule a completed payment obeys — only an order still at `awaiting_payment`
+moves to `confirmed`. Do not re-implement that transition per provider.
+
+`PAYMENT_PROVIDER=demo` renders `/pay/[reference]` as our own simulated
+checkout instead of handing over to PayFast, so a demonstration built for a
+market PayFast cannot serve still shows the whole flow in the right currency.
+Three things about that page are not stylistic and must survive any edit:
+
+- **No third-party branding.** No processor's name, mark or styling. It is the
+  bakery's page. Imitating a real processor misrepresents a company the owner
+  has no relationship with, and a prospect's screenshot would imply an
+  integration that does not exist.
+- **No usable card form.** The fields are fixed at `4242 4242 4242 4242`,
+  disabled, unnamed and submitted nowhere. Making them typeable turns a public
+  URL into a phishing-shaped object regardless of intent.
+- **The notice stays above the button and stays large.** "Demonstration only —
+  no payment is taken and no card details are stored." Not small print.
+
+`paymentProvider()` refuses to return `demo` when live PayFast credentials
+(`isLive()`, the `PAYFAST_*` variables) or any Stripe secret key are present,
+throwing rather than rendering. It is re-checked inside the server action as
+well as the page, because the action confirms an order for free. A simulated
+checkout on a deployment that could take real money is the failure this whole
+arrangement exists to prevent.
+
 ### PayFast
 
 `src/lib/payfast.ts`. Non-obvious constraints, each of which produces a confusing failure:
@@ -102,7 +131,7 @@ Customer PII (name, email, phone, delivery address) must not go in the Blob stor
 
 ## Environment
 
-`OPENROUTER_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` are set on all three Vercel scopes. `NEXT_PUBLIC_MARKET` is unset, so the demo builds for South Africa; an unrecognised value fails the build rather than quietly shipping rand prices to another country. `PAYFAST_LIVE` and the `PAYFAST_*` credentials are unset, so the app runs against the sandbox.
+`OPENROUTER_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` are set on all three Vercel scopes. `NEXT_PUBLIC_MARKET` is unset, so the demo builds for South Africa; an unrecognised value fails the build rather than quietly shipping rand prices to another country. `PAYFAST_LIVE` and the `PAYFAST_*` credentials are unset, so the app runs against the sandbox. `PAYMENT_PROVIDER` is unset too, so the deployed demo hands over to PayFast; the market builds sold abroad set it to `demo`.
 
 The Vercel CLI cannot set Preview-scope variables — it loops on a git-branch prompt regardless of `--yes`. Use the REST API (`POST /v10/projects/{id}/env` with `target: ["preview"]`) or the dashboard.
 

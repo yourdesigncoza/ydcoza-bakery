@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatRand } from "@/lib/catalogue/pricing";
+import { formatMoney } from "@/lib/catalogue/pricing";
+import { MARKET } from "@/lib/market";
 import { resolve, resolveAddOns, sizesFor } from "@/lib/catalogue";
 import { ORDER_STATUSES, STATUS_LABELS, type Order } from "@/lib/orders/types";
 import { signOut, updateOrder } from "./actions";
@@ -112,11 +113,11 @@ function OrderCard({ order }: { order: Order }) {
         </div>
         <div className="text-right">
           <p className="font-display text-[20px] font-semibold text-ink">
-            {formatRand(order.total)}
+            {formatMoney(order.total)}
           </p>
           <p className="text-[11.5px] text-muted">
             {order.customer.method === "delivery" ? "Deliver" : "Collect"}{" "}
-            {due.toLocaleDateString("en-ZA", { day: "numeric", month: "short" })}
+            {due.toLocaleDateString(MARKET.locale, { day: "numeric", month: "short" })}
             {daysAway >= 0 ? ` · ${daysAway}d` : " · overdue"}
           </p>
         </div>

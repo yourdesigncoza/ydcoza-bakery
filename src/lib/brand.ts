@@ -4,6 +4,10 @@
  * Kept apart from the catalogue so the same builder can be dropped in for a
  * different bakery by editing one file. Bloom & Batter is a fictional studio
  * used for this demonstration build.
+ *
+ * Currency, locale and tax are not here: they belong to the market the
+ * deployment sells into rather than to the bakery, and live in `market.ts` so
+ * there is one place to edit and no way for the two to disagree.
  */
 export const BRAND = {
   name: "Bloom & Batter",
@@ -16,7 +20,6 @@ export const BRAND = {
   phone: "+27 11 555 0182",
   address: "14 Grant Avenue, Norwood, Johannesburg",
   hours: "Tuesday to Saturday, 9am – 4pm",
-  currency: "ZAR",
   /** Shown wherever the customer is told what a preview image is and isn't. */
   previewDisclaimer:
     "Previews are an artistic impression used to guide the decorator. Your cake " +

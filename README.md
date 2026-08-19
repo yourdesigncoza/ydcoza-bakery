@@ -13,7 +13,9 @@ Built as a demonstration piece. Bloom & Batter is a fictional studio.
 src/lib/catalogue/     the menu — every option, price, lead time and render prompt
   index.ts             the catalogue itself; the single source of truth
   pricing.ts           derives line items, totals, quote routing and lead times
+  prices.ts            per-market price tables; the rand figures are the fallback
   prompt.ts            builds the image prompt and the preview cache key
+src/lib/market.ts      currency, locale and tax for the market being sold into
 src/lib/orders/        order shapes and the storage interface
 src/lib/payfast.ts     payment initiation and notification verification
 src/lib/openrouter.ts  image rendering
@@ -23,6 +25,18 @@ src/app/               builder, checkout, payment handover, tracking, order boar
 Adding an option to the menu is a single edit to `src/lib/catalogue/index.ts`.
 The builder tile, the price, the order brief, the admin board and the wording
 sent to the image model all follow from it.
+
+## Selling into another market
+
+One deployment serves one country. `NEXT_PUBLIC_MARKET` picks it at build time,
+which settles the currency, the number and date formatting, and what the tax is
+called — see `src/lib/market.ts`. Prices are not converted: a market that sells
+at its own prices lists them in `src/lib/catalogue/prices.ts`, and anything it
+leaves out keeps the rand figure.
+
+Payments are the exception. PayFast is South African and settles in rand only,
+so a deployment outside South Africa needs its own gateway before it can take
+money.
 
 ## Running it
 
@@ -37,6 +51,7 @@ Then open http://localhost:3000.
 
 | Variable | Needed for | Notes |
 | --- | --- | --- |
+| `NEXT_PUBLIC_MARKET` | Currency, locale and tax | `za`, `gb`, `ie`, `au`, `nz` or `ca`. Defaults to `za` |
 | `OPENROUTER_API_KEY` | Cake previews | Required for the preview button and the tile generator |
 | `BLOB_READ_WRITE_TOKEN` | Preview cache, photo uploads | Set automatically by `vercel env pull` |
 | `ADMIN_PASSWORD` | The order board | Without it `/admin` stays closed |

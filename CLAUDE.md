@@ -42,6 +42,24 @@ A demonstration storefront for a fictional bakery (Bloom & Batter). A customer d
 
 Adding a menu option is one edit to the catalogue. The builder tile, the price, the brief, the admin board and the render prompt all follow. Resist adding option names or prices anywhere else.
 
+### One deployment, one market
+
+`src/lib/market.ts` holds the currency, locale and tax label for the country
+being sold into, chosen at build time by `NEXT_PUBLIC_MARKET` and defaulting to
+South Africa. There is no currency switcher and nothing converts: per-market
+prices are stated outright in `catalogue/prices.ts` and fall back to the rand
+figures. `formatMoney()` builds on `Intl`, then swaps in the market's own
+separators — CLDR's en-ZA gives `R 1 290,00`, and South African price lists say
+`R1 290.00`.
+
+Currency lives there and nowhere else. It used to be declared on `BRAND` as
+well, unread, which is two places to edit and no way to notice they disagree.
+
+The tax fields are recorded but nothing computes or displays tax — prices are
+quoted as the customer pays them. Only South Africa carries a rate, because only
+South Africa's was already written down. What a cake attracts elsewhere is for
+the buyer's accountant, not this repo.
+
 `DEFAULT_CONFIG` (same file) is the cake a visitor starts with. Every default is deliberately the R0 option in its list and `addOnIds` is empty, so the opening price is the honest base cake — do not pre-select chargeable extras.
 
 ### State is carried in the URL, not stored
@@ -84,7 +102,7 @@ Customer PII (name, email, phone, delivery address) must not go in the Blob stor
 
 ## Environment
 
-`OPENROUTER_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` are set on all three Vercel scopes. `PAYFAST_LIVE` and the `PAYFAST_*` credentials are unset, so the app runs against the sandbox.
+`OPENROUTER_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` are set on all three Vercel scopes. `NEXT_PUBLIC_MARKET` is unset, so the demo builds for South Africa; an unrecognised value fails the build rather than quietly shipping rand prices to another country. `PAYFAST_LIVE` and the `PAYFAST_*` credentials are unset, so the app runs against the sandbox.
 
 The Vercel CLI cannot set Preview-scope variables — it loops on a git-branch prompt regardless of `--yes`. Use the REST API (`POST /v10/projects/{id}/env` with `target: ["preview"]`) or the dashboard.
 

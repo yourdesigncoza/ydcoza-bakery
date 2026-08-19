@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { currentOrigin } from "@/app/actions";
 import { BRAND } from "@/lib/brand";
 import { resolve } from "@/lib/catalogue";
-import { formatRand } from "@/lib/catalogue/pricing";
+import { formatMoney } from "@/lib/catalogue/pricing";
 import { getOrderStore } from "@/lib/orders/store";
 import { config as payfastConfig, paymentFields } from "@/lib/payfast";
 import { AutoSubmit } from "./AutoSubmit";
@@ -50,7 +50,7 @@ export default async function PayPage({ params }: PageProps<"/pay/[reference]">)
           Taking you to PayFast
         </h1>
         <p className="mt-3 text-[13px] text-body">
-          Order {order.reference} — {formatRand(order.total)}
+          Order {order.reference} — {formatMoney(order.total)}
         </p>
 
         {!settings.live ? (

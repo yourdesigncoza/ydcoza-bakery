@@ -1,3 +1,8 @@
+import {
+  withMarketBasePrices,
+  withMarketSurcharges,
+  withMarketThreshold,
+} from "./prices";
 import type { CakeConfig, CakeType, Option, Palette, Size } from "./types";
 
 export * from "./types";
@@ -7,10 +12,12 @@ export * from "./types";
  * lead times are written down — the builder, the pricing engine, the order
  * brief and the admin dashboard all read from here.
  *
- * Prices are in South African rand, inclusive of VAT.
+ * Prices are the South African rand figures, inclusive of VAT. A deployment
+ * selling into another market states its own prices in `prices.ts` — they are
+ * never converted from these — and describes its own tax in `../market.ts`.
  */
 
-export const CAKE_TYPES: CakeType[] = [
+export const CAKE_TYPES: CakeType[] = withMarketBasePrices([
   {
     id: "single-barrel",
     name: "Single Barrel Cake",
@@ -102,7 +109,7 @@ export const CAKE_TYPES: CakeType[] = [
     sizeIds: ["small"],
     servings: { small: "1–2 servings" },
   },
-];
+]);
 
 export const SIZES: Size[] = [
   { id: "small", name: "Small", servings: "6–8 servings", multiplier: 0.75 },
@@ -110,7 +117,7 @@ export const SIZES: Size[] = [
   { id: "large", name: "Large", servings: "20–26 servings", multiplier: 1.45 },
 ];
 
-export const FLAVOURS: Option[] = [
+export const FLAVOURS: Option[] = withMarketSurcharges([
   {
     id: "vanilla",
     name: "Vanilla",
@@ -159,9 +166,9 @@ export const FLAVOURS: Option[] = [
     image: "/catalogue/flavours/cookies-cream.jpg",
     promptFragment: "cookies and cream sponge",
   },
-];
+]);
 
-export const FILLINGS: Option[] = [
+export const FILLINGS: Option[] = withMarketSurcharges([
   {
     id: "buttercream",
     name: "Buttercream",
@@ -202,7 +209,7 @@ export const FILLINGS: Option[] = [
     image: "/catalogue/fillings/cream-cheese.jpg",
     promptFragment: "cream cheese filling",
   },
-];
+]);
 
 export const PALETTES: Palette[] = [
   { id: "ivory", name: "Ivory & Cream", hex: "#f1e2d0", promptFragment: "soft ivory and cream" },
@@ -213,7 +220,7 @@ export const PALETTES: Palette[] = [
   { id: "cocoa", name: "Rich Cocoa", hex: "#5b3722", promptFragment: "deep chocolate cocoa brown" },
 ];
 
-export const FINISHES: Option[] = [
+export const FINISHES: Option[] = withMarketSurcharges([
   {
     id: "smooth-buttercream",
     name: "Smooth Buttercream",
@@ -247,9 +254,9 @@ export const FINISHES: Option[] = [
     image: "/catalogue/finishes/drip.jpg",
     promptFragment: "with a glossy ganache drip running down from the top edge",
   },
-];
+]);
 
-export const OCCASIONS: Option[] = [
+export const OCCASIONS: Option[] = withMarketSurcharges([
   {
     id: "birthday",
     name: "Birthday",
@@ -278,9 +285,9 @@ export const OCCASIONS: Option[] = [
     surcharge: 0,
     promptFragment: "styled for a wedding, refined and understated",
   },
-];
+]);
 
-export const PRESENTATIONS: Option[] = [
+export const PRESENTATIONS: Option[] = withMarketSurcharges([
   {
     id: "cake-board",
     name: "Cake Board",
@@ -305,9 +312,9 @@ export const PRESENTATIONS: Option[] = [
     image: "/catalogue/presentation/acrylic-box.jpg",
     promptFragment: "presented inside a clear acrylic display box",
   },
-];
+]);
 
-export const ADD_ONS: Option[] = [
+export const ADD_ONS: Option[] = withMarketSurcharges([
   {
     id: "acrylic-topper",
     name: "Acrylic Topper",
@@ -372,10 +379,10 @@ export const ADD_ONS: Option[] = [
     image: "/catalogue/addons/custom-message.jpg",
     promptFragment: "a short hand-piped message across the front",
   },
-];
+]);
 
 /** Orders above this total are quoted by hand rather than paid for online. */
-export const QUOTE_THRESHOLD = 3500;
+export const QUOTE_THRESHOLD = withMarketThreshold(3500);
 
 /** The bakery cannot take an order for collection sooner than this. */
 export const MIN_LEAD_DAYS = 2;

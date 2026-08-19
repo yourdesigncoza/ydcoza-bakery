@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { decodeConfig } from "@/lib/config-codec";
 import { priceCake } from "@/lib/catalogue/pricing";
 import { resolve } from "@/lib/catalogue";
+import { MARKET } from "@/lib/market";
 import { getOrderStore } from "@/lib/orders/store";
 import { findPreview } from "@/lib/preview-store";
 import type { CustomerDetails, FulfilmentMethod } from "@/lib/orders/types";
@@ -70,7 +71,7 @@ export async function placeOrder(
     const type = resolve("typeId", config.typeId);
     fieldErrors.requiredDate =
       `${type.name} orders need ${quote.leadDays} days — the earliest we can manage is ` +
-      earliest.toLocaleDateString("en-ZA", { day: "numeric", month: "long" });
+      earliest.toLocaleDateString(MARKET.locale, { day: "numeric", month: "long" });
   }
 
   if (Object.keys(fieldErrors).length > 0) {

@@ -1,6 +1,6 @@
 import { resolve, resolveAddOns, sizesFor } from "@/lib/catalogue";
 import type { CakeConfig } from "@/lib/catalogue/types";
-import { formatRand, type Quote } from "@/lib/catalogue/pricing";
+import { formatMoney, type Quote } from "@/lib/catalogue/pricing";
 
 /**
  * Every choice the customer made, as one readable brief.
@@ -70,7 +70,7 @@ export function CakeSummary({
             {quote.requiresQuote ? "Estimated Price" : "Total Price"}
           </span>
           <span className="font-display text-[22px] font-semibold text-ink">
-            {formatRand(quote.total)}
+            {formatMoney(quote.total)}
           </span>
         </div>
       ) : null}

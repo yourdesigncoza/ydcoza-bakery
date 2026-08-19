@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { BRAND } from "@/lib/brand";
 import type { CakeConfig } from "@/lib/catalogue/types";
-import { formatRand, type Quote } from "@/lib/catalogue/pricing";
+import { formatMoney, type Quote } from "@/lib/catalogue/pricing";
 import { CakeSummary } from "@/components/CakeSummary";
 import { SparkleIcon } from "@/components/icons";
 
@@ -86,7 +86,7 @@ export function PreviewPanel({
           {quote.requiresQuote ? "Estimated Total" : "Estimated Total"}
         </span>
         <span className="font-display text-[26px] font-semibold text-ink">
-          {formatRand(quote.total)}
+          {formatMoney(quote.total)}
         </span>
       </div>
 

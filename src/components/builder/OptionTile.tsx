@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { formatRand } from "@/lib/catalogue/pricing";
+import { formatMoney } from "@/lib/catalogue/pricing";
 
 interface OptionTileProps {
   name: string;
@@ -93,7 +93,7 @@ export function OptionTile({
         ) : null}
         {surcharge > 0 ? (
           <span className="mt-0.5 block text-[11px] font-medium text-accent">
-            +{formatRand(surcharge)}
+            +{formatMoney(surcharge)}
           </span>
         ) : null}
       </span>

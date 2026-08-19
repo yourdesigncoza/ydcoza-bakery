@@ -1,3 +1,4 @@
+import { MARKET } from "../market";
 import {
   QUOTE_THRESHOLD,
   resolve,
@@ -24,9 +25,30 @@ export interface Quote {
   leadDays: number;
 }
 
-/** Format an amount as South African rand, e.g. `R1 290.00`. */
-export function formatRand(amount: number): string {
-  return `R${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}`;
+const MONEY = new Intl.NumberFormat(MARKET.locale, {
+  style: "currency",
+  currency: MARKET.currency,
+});
+
+/**
+ * Format an amount in the market's currency, e.g. `R1 290.00` in South Africa
+ * or `£1,290.00` in the United Kingdom.
+ *
+ * `Intl` supplies the symbol, its placement and the digits, so a new market
+ * needs no code here. Its separators are then swapped for the market's own
+ * where the two disagree: CLDR writes en-ZA as `R 1 290,00`, while every price
+ * list in the country writes `R1 290.00`.
+ */
+export function formatMoney(amount: number): string {
+  const { group, decimal, currencySpacing } = MARKET.format ?? {};
+  return MONEY.formatToParts(amount)
+    .map((part) => {
+      if (part.type === "group" && group !== undefined) return group;
+      if (part.type === "decimal" && decimal !== undefined) return decimal;
+      if (part.type === "literal" && currencySpacing !== undefined) return currencySpacing;
+      return part.value;
+    })
+    .join("");
 }
 
 /**
@@ -82,7 +104,7 @@ export function priceCake(config: CakeConfig, hasInspirationImage = false): Quot
     quoteReasons.push(`${type.name} orders are quoted individually`);
   }
   if (total > QUOTE_THRESHOLD) {
-    quoteReasons.push(`Orders over ${formatRand(QUOTE_THRESHOLD)} are confirmed by the bakery`);
+    quoteReasons.push(`Orders over ${formatMoney(QUOTE_THRESHOLD)} are confirmed by the bakery`);
   }
   if (hasInspirationImage) {
     quoteReasons.push("An inspiration image needs a decorator to review it");

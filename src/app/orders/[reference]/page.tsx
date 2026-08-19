@@ -6,7 +6,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { CakeSummary } from "@/components/CakeSummary";
 import { OrderProgress } from "@/components/OrderProgress";
 import { BRAND } from "@/lib/brand";
-import { formatRand, priceCake } from "@/lib/catalogue/pricing";
+import { formatMoney, priceCake } from "@/lib/catalogue/pricing";
+import { MARKET } from "@/lib/market";
 import { getOrderStore } from "@/lib/orders/store";
 import { STATUS_DESCRIPTIONS, STATUS_LABELS } from "@/lib/orders/types";
 
@@ -109,7 +110,7 @@ export default async function OrderPage({
               <dl className="space-y-1.5">
                 <Row label="For">
                   {new Date(`${order.customer.requiredDate}T00:00:00`).toLocaleDateString(
-                    "en-ZA",
+                    MARKET.locale,
                     { weekday: "long", day: "numeric", month: "long", year: "numeric" },
                   )}
                 </Row>
@@ -130,7 +131,7 @@ export default async function OrderPage({
                       : "Paid"}
                 </span>
                 <span className="font-display text-[20px] font-semibold text-ink">
-                  {formatRand(order.total)}
+                  {formatMoney(order.total)}
                 </span>
               </div>
             </div>

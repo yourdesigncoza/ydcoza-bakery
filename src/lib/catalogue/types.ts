@@ -12,7 +12,7 @@ export interface Option {
   name: string;
   /** Short line shown under the option name in the builder. */
   tagline: string;
-  /** Added to the order total when selected, in rand. */
+  /** Added to the order total when selected, in the market's currency. */
   surcharge: number;
   /** Photograph shown on the option tile. */
   image?: string;
@@ -42,7 +42,7 @@ export interface CakeType {
   id: string;
   name: string;
   tagline: string;
-  /** Price at the Standard size before any other choice, in rand. */
+  /** Price at the Standard size before any other choice, in the market's currency. */
   basePrice: number;
   image?: string;
   promptFragment: string;

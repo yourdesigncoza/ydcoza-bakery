@@ -30,6 +30,119 @@ export interface MarketPrices {
  */
 export const MARKET_PRICES: Partial<Record<MarketId, MarketPrices>> = {
   // za — the catalogue itself is the South African price list.
+
+  /**
+   * United Kingdom. Researched 2026-08-19 from published price lists of UK
+   * independent bakeries.
+   *
+   * Three entries are zero on purpose, and they are the reason this table
+   * cannot be a multiplier. UK bakeries do not price fillings at all — the
+   * flavour is the sponge-and-filling pairing — so the four filling surcharges
+   * go. Cake boards and boxes are included in the price everywhere, and a
+   * premium gift box or an acrylic display box is not something a UK bakery
+   * sells. A hand-piped greeting is included, as is the first decorative
+   * element, which is why a texture or a drip costs nothing and fondant, at
+   * +£20, is the upcharge that actually matters.
+   */
+  gb: {
+    basePrices: {
+      "single-barrel": 70,
+      "double-barrel": 135,
+      bento: 25,
+      cupcakes: 35,
+      heart: 65,
+      sheet: 85,
+      wedding: 450,
+      mini: 30,
+    },
+    surcharges: {
+      // Flavour. Chocolate is free in the UK and already zero in the catalogue.
+      "red-velvet": 5,
+      carrot: 5,
+      lemon: 5,
+      "cookies-cream": 5,
+      // Filling. Not priced separately in this market.
+      "chocolate-ganache": 0,
+      "salted-caramel": 0,
+      "berry-compote": 0,
+      "cream-cheese": 0,
+      // Finish. One decorative element comes with the cake; the second is charged.
+      fondant: 20,
+      textured: 0,
+      drip: 0,
+      // Presentation. Included, and not sold as extras here.
+      "gift-box": 0,
+      "acrylic-box": 0,
+      // Add-ons.
+      "acrylic-topper": 7,
+      "gold-leaf": 10,
+      macarons: 15,
+      "fresh-berries": 20,
+      "edible-image": 7,
+      candles: 6,
+      "name-plaque": 3,
+      "custom-message": 0,
+    },
+    quoteThreshold: 350,
+  },
+
+  /**
+   * Australia. Researched 2026-08-19 from ~28 published price lists across all
+   * states.
+   *
+   * Australian bakeries price height as a flat step separate from diameter,
+   * which is why the gap between a single tall tier and a double barrel is
+   * narrower here than the rand catalogue implies. Prices are GST-inclusive,
+   * which is a legal requirement rather than a convention: s48 of the
+   * Australian Consumer Law requires a single total price, and the ACCC has
+   * said that adding GST at payment time may mislead.
+   *
+   * Note that `single-barrel` is not an Australian term. They say extended
+   * height, tall, or double height. Renaming it for this market is outstanding.
+   */
+  au: {
+    basePrices: {
+      "single-barrel": 165,
+      "double-barrel": 195,
+      bento: 35,
+      cupcakes: 60,
+      heart: 130,
+      sheet: 155,
+      wedding: 800,
+      mini: 55,
+    },
+    surcharges: {
+      // Flavour. Scaled from the UK pattern; Australian lists price base
+      // cakes thoroughly but rarely publish per-flavour surcharges.
+      "red-velvet": 10,
+      carrot: 10,
+      lemon: 10,
+      "cookies-cream": 10,
+      // Filling. No Australian evidence of separate pricing either.
+      "chocolate-ganache": 0,
+      "salted-caramel": 0,
+      "berry-compote": 0,
+      "cream-cheese": 0,
+      // Finish. Fondant runs +20-25% on the total.
+      fondant: 40,
+      textured: 0,
+      drip: 10,
+      // Presentation. Unlike the UK, a box can be a paid upgrade here — one
+      // Canberra bakery charges $7.50 for a board and box on a bento.
+      "gift-box": 10,
+      "acrylic-box": 20,
+      // Add-ons.
+      "acrylic-topper": 20,
+      "gold-leaf": 15,
+      macarons: 20,
+      "fresh-berries": 20,
+      "edible-image": 15,
+      candles: 10,
+      "name-plaque": 15,
+      "custom-message": 0,
+    },
+    quoteThreshold: 700,
+  },
 };
 
 const PRICES: MarketPrices = MARKET_PRICES[MARKET.id as MarketId] ?? {};

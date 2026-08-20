@@ -15,8 +15,22 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+/**
+ * What relative URLs in the metadata are resolved against.
+ *
+ * Each bakery is its own deployment on its own domain, so this cannot be a
+ * constant — a British storefront whose social cards and canonical links point
+ * at the South African demo is advertising somebody else's shop. Vercel names
+ * the project's own production domain, which is what a share link should use
+ * even when the page is being served from a preview URL. The fallback is the
+ * demo this repository deploys.
+ */
+const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "https://bakery.yourdesign.co.za";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bakery.yourdesign.co.za"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${BRAND.name} — Build Your Cake`,
     template: `%s · ${BRAND.name}`,

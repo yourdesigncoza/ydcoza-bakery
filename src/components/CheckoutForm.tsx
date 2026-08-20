@@ -75,7 +75,7 @@ export function CheckoutForm({
             type="tel"
             label="Mobile number"
             autoComplete="tel"
-            placeholder="082 000 0000"
+            placeholder={BRAND.mobilePlaceholder}
             error={state.fieldErrors?.phone}
             required
           />
@@ -105,7 +105,7 @@ export function CheckoutForm({
                 />
                 <span className="text-ink">{option}</span>
                 <span className="mt-0.5 block text-[11px] font-normal text-muted">
-                  {option === "collection" ? BRAND.address : "Within greater Johannesburg"}
+                  {option === "collection" ? BRAND.address : BRAND.deliveryArea}
                 </span>
               </label>
             ))}

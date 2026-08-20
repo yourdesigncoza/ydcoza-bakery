@@ -1,0 +1,18 @@
+# What a CLI deploy must not upload.
+#
+# Git-integration deploys only ever see committed files, so this matters for
+# `vercel deploy` from a working tree — which is how the export-market demos
+# are put up before their branch is merged.
+
+# Reference material: the original bakery's own photographs and a copyrighted
+# paper. Kept local rather than redistributed, same reason as in .gitignore.
+/idea/
+
+# Secrets and local state. Vercel supplies the environment itself.
+.env*
+/.vercel/
+
+# Build output and dependencies. Vercel installs and builds its own.
+/node_modules/
+/.next/
+*.tsbuildinfo

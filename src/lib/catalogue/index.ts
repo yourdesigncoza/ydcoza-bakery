@@ -1,3 +1,4 @@
+import { withMarketTypeNames } from "./naming";
 import {
   withMarketBasePrices,
   withMarketSurcharges,
@@ -17,99 +18,101 @@ export * from "./types";
  * never converted from these — and describes its own tax in `../market.ts`.
  */
 
-export const CAKE_TYPES: CakeType[] = withMarketBasePrices([
-  {
-    id: "single-barrel",
-    name: "Single Barrel Cake",
-    tagline: "Tall & elegant single tier",
-    basePrice: 680,
-    image: "/catalogue/types/single-barrel.jpg",
-    promptFragment:
-      "a tall single-tier barrel cake with straight sharp sides, roughly twice as tall as it is wide",
-    leadDays: 4,
-  },
-  {
-    id: "double-barrel",
-    name: "Double Barrel Cake",
-    tagline: "Two-tier statement cake",
-    basePrice: 1290,
-    image: "/catalogue/types/double-barrel.jpg",
-    promptFragment:
-      "a dramatic double barrel cake — two unusually tall tiers with straight vertical " +
-      "sides stacked directly on each other, the whole cake far taller than it is wide",
-    leadDays: 5,
-  },
-  {
-    id: "bento",
-    name: "Bento Cake",
-    tagline: "Mini cake in a lunch box",
-    basePrice: 280,
-    image: "/catalogue/types/bento.jpg",
-    promptFragment:
-      "a tiny bento cake for one or two people, presented in an open kraft lunch box",
-    leadDays: 2,
-    sizeIds: ["small"],
-    servings: { small: "1–2 servings" },
-  },
-  {
-    id: "cupcakes",
-    name: "Cupcakes",
-    tagline: "Box of handcrafted cupcakes",
-    basePrice: 340,
-    image: "/catalogue/types/cupcakes.jpg",
-    promptFragment:
-      "a boxed set of handcrafted cupcakes with tall swirled buttercream tops",
-    leadDays: 2,
-    servings: { small: "6 cupcakes", standard: "12 cupcakes", large: "24 cupcakes" },
-  },
-  {
-    id: "heart",
-    name: "Heart Cake",
-    tagline: "Romantic heart-shaped cake",
-    basePrice: 620,
-    image: "/catalogue/types/heart.jpg",
-    promptFragment:
-      "a heart-shaped cake with a soft vintage piped border around the top edge",
-    leadDays: 3,
-  },
-  {
-    id: "sheet",
-    name: "Sheet Cake",
-    tagline: "Perfect for large celebrations",
-    basePrice: 790,
-    image: "/catalogue/types/sheet.jpg",
-    promptFragment:
-      "one whole uncut rectangular sheet cake — never a slice — shown from a high " +
-      "three-quarter angle so its wide flat decorated top and square corners are visible",
-    leadDays: 3,
-    sizeIds: ["standard", "large"],
-    servings: { standard: "20–24 servings", large: "40–50 servings" },
-  },
-  {
-    id: "wedding",
-    name: "Wedding Cake",
-    tagline: "Multi-tier wedding cake",
-    basePrice: 2850,
-    image: "/catalogue/types/wedding.jpg",
-    promptFragment:
-      "an elegant three-tier wedding cake, each tier stacked flush and finished immaculately",
-    leadDays: 21,
-    sizeIds: ["standard", "large"],
-    servings: { standard: "40–60 servings", large: "80–120 servings" },
-    quoteOnly: true,
-  },
-  {
-    id: "mini",
-    name: "Mini Cake",
-    tagline: "Personal-sized mini cake",
-    basePrice: 240,
-    image: "/catalogue/types/mini.jpg",
-    promptFragment: "a small personal-sized celebration cake for one person",
-    leadDays: 2,
-    sizeIds: ["small"],
-    servings: { small: "1–2 servings" },
-  },
-]);
+export const CAKE_TYPES: CakeType[] = withMarketTypeNames(
+  withMarketBasePrices([
+    {
+      id: "single-barrel",
+      name: "Single Barrel Cake",
+      tagline: "Tall & elegant single tier",
+      basePrice: 680,
+      image: "/catalogue/types/single-barrel.jpg",
+      promptFragment:
+        "a tall single-tier barrel cake with straight sharp sides, roughly twice as tall as it is wide",
+      leadDays: 4,
+    },
+    {
+      id: "double-barrel",
+      name: "Double Barrel Cake",
+      tagline: "Two-tier statement cake",
+      basePrice: 1290,
+      image: "/catalogue/types/double-barrel.jpg",
+      promptFragment:
+        "a dramatic double barrel cake — two unusually tall tiers with straight vertical " +
+        "sides stacked directly on each other, the whole cake far taller than it is wide",
+      leadDays: 5,
+    },
+    {
+      id: "bento",
+      name: "Bento Cake",
+      tagline: "Mini cake in a lunch box",
+      basePrice: 280,
+      image: "/catalogue/types/bento.jpg",
+      promptFragment:
+        "a tiny bento cake for one or two people, presented in an open kraft lunch box",
+      leadDays: 2,
+      sizeIds: ["small"],
+      servings: { small: "1–2 servings" },
+    },
+    {
+      id: "cupcakes",
+      name: "Cupcakes",
+      tagline: "Box of handcrafted cupcakes",
+      basePrice: 340,
+      image: "/catalogue/types/cupcakes.jpg",
+      promptFragment:
+        "a boxed set of handcrafted cupcakes with tall swirled buttercream tops",
+      leadDays: 2,
+      servings: { small: "6 cupcakes", standard: "12 cupcakes", large: "24 cupcakes" },
+    },
+    {
+      id: "heart",
+      name: "Heart Cake",
+      tagline: "Romantic heart-shaped cake",
+      basePrice: 620,
+      image: "/catalogue/types/heart.jpg",
+      promptFragment:
+        "a heart-shaped cake with a soft vintage piped border around the top edge",
+      leadDays: 3,
+    },
+    {
+      id: "sheet",
+      name: "Sheet Cake",
+      tagline: "Perfect for large celebrations",
+      basePrice: 790,
+      image: "/catalogue/types/sheet.jpg",
+      promptFragment:
+        "one whole uncut rectangular sheet cake — never a slice — shown from a high " +
+        "three-quarter angle so its wide flat decorated top and square corners are visible",
+      leadDays: 3,
+      sizeIds: ["standard", "large"],
+      servings: { standard: "20–24 servings", large: "40–50 servings" },
+    },
+    {
+      id: "wedding",
+      name: "Wedding Cake",
+      tagline: "Multi-tier wedding cake",
+      basePrice: 2850,
+      image: "/catalogue/types/wedding.jpg",
+      promptFragment:
+        "an elegant three-tier wedding cake, each tier stacked flush and finished immaculately",
+      leadDays: 21,
+      sizeIds: ["standard", "large"],
+      servings: { standard: "40–60 servings", large: "80–120 servings" },
+      quoteOnly: true,
+    },
+    {
+      id: "mini",
+      name: "Mini Cake",
+      tagline: "Personal-sized mini cake",
+      basePrice: 240,
+      image: "/catalogue/types/mini.jpg",
+      promptFragment: "a small personal-sized celebration cake for one person",
+      leadDays: 2,
+      sizeIds: ["small"],
+      servings: { small: "1–2 servings" },
+    },
+  ]),
+);
 
 export const SIZES: Size[] = [
   { id: "small", name: "Small", servings: "6–8 servings", multiplier: 0.75 },

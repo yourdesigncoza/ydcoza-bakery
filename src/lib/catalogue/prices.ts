@@ -1,4 +1,5 @@
 import { MARKET, type MarketId } from "../market";
+import { withOverrides } from "./overrides";
 import type { CakeType, Option } from "./types";
 
 /**
@@ -98,7 +99,8 @@ export const MARKET_PRICES: Partial<Record<MarketId, MarketPrices>> = {
    * said that adding GST at payment time may mislead.
    *
    * Note that `single-barrel` is not an Australian term. They say extended
-   * height, tall, or double height. Renaming it for this market is outstanding.
+   * height, tall, or double height, so this market renames it on the tile —
+   * see `naming.ts`. The id stays `single-barrel` everywhere, including here.
    */
   au: {
     basePrices: {
@@ -149,20 +151,12 @@ const PRICES: MarketPrices = MARKET_PRICES[MARKET.id as MarketId] ?? {};
 
 /** Apply the market's base prices to a list of cake types. */
 export function withMarketBasePrices(types: CakeType[]): CakeType[] {
-  const overrides = PRICES.basePrices;
-  if (!overrides) return types;
-  return types.map((type) =>
-    type.id in overrides ? { ...type, basePrice: overrides[type.id] } : type,
-  );
+  return withOverrides(types, "basePrice", PRICES.basePrices);
 }
 
 /** Apply the market's surcharges to a list of options. */
 export function withMarketSurcharges(options: Option[]): Option[] {
-  const overrides = PRICES.surcharges;
-  if (!overrides) return options;
-  return options.map((option) =>
-    option.id in overrides ? { ...option, surcharge: overrides[option.id] } : option,
-  );
+  return withOverrides(options, "surcharge", PRICES.surcharges);
 }
 
 /** The market's quote threshold, falling back to the rand one. */
